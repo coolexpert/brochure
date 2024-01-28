@@ -7,6 +7,8 @@ import DOMPurify from "dompurify";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { useDropzone } from "react-dropzone";
+import axios from 'axios';
+import { saveAs } from 'file-saver';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("purpose");
@@ -102,6 +104,23 @@ const Dashboard = () => {
       </>
     ));
 
+    const createAndDownloadPdf = () => {
+      const state = {
+        name: 'Sudfiyan',
+        receiptId: 0,
+        price1: 0,
+        price2: 0,
+      }
+    
+      axios.post('https://pdf-5sg8.onrender.com/create-pdf', state)
+        .then(() => axios.get('https://pdf-5sg8.onrender.com/fetch-pdf', { responseType: 'blob' }))
+        .then((res) => {
+          const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
+  
+          saveAs(pdfBlob, 'newPdf.pdf');
+        })
+    }
+
     const handleFirstStepNext = async () => {
       // Check if either the brochureTitle or image is empty
       if (!brochureTitle || acceptedFiles.length === 0) {
@@ -193,6 +212,7 @@ const Dashboard = () => {
 
     return (
       <div className="space-y-4">
+            <button onClick={createAndDownloadPdf}>Download PDF</button>
         <div>
           <label className="text-gray-600 font-semibold block mb-2">
             Brochure Title*{" "}
