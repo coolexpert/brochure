@@ -106,10 +106,8 @@ const Dashboard = () => {
 
     const createAndDownloadPdf = () => {
       const state = {
-        name: 'Sudfiyan',
-        receiptId: 0,
-        price1: 0,
-        price2: 0,
+        description: '<h1>aaaa</h1>',
+        image:"https://brochure-beta.vercel.app/uploads/rmenesest.png"
       }
     
       axios.post('https://pdf-5sg8.onrender.com/create-pdf', state)
